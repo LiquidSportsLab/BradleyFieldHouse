@@ -15,7 +15,7 @@ sns.set_style("darkgrid")
 
 # Page configuration
 st.set_page_config(
-    page_title="St. Bonaventure Baseball Performance Dashboard", 
+    page_title="Bradley Field House Performance Dashboard", 
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -23,6 +23,82 @@ st.set_page_config(
 # Custom CSS for styling
 st.markdown("""
 <style>
+    /* Sidebar styling - Black background */
+    [data-testid="stSidebar"] {
+        background-color: #000000 !important;
+    }
+    
+    [data-testid="stSidebar"] > div:first-child {
+        background-color: #000000 !important;
+    }
+    
+    /* Sidebar text colors - White text on black background */
+    [data-testid="stSidebar"] * {
+        color: #ffffff !important;
+    }
+    
+    [data-testid="stSidebar"] .stMarkdown {
+        color: #ffffff !important;
+    }
+    
+    [data-testid="stSidebar"] h1,
+    [data-testid="stSidebar"] h2,
+    [data-testid="stSidebar"] h3,
+    [data-testid="stSidebar"] h4 {
+        color: #ffffff !important;
+    }
+    
+    [data-testid="stSidebar"] label {
+        color: #ffffff !important;
+        font-weight: bold !important;
+    }
+    
+    /* Sidebar selectbox styling - Blue theme */
+    [data-testid="stSidebar"] .stSelectbox > div > div {
+        background-color: #0052CC !important;
+        border: 2px solid #0052CC !important;
+    }
+    
+    [data-testid="stSidebar"] .stSelectbox > div > div > div {
+        color: white !important;
+    }
+    
+    /* Sidebar metrics styling */
+    [data-testid="stSidebar"] .stMetric {
+        background-color: #1a1a1a !important;
+        border: 2px solid #0052CC !important;
+        border-radius: 6px !important;
+        padding: 0.5rem !important;
+    }
+    
+    [data-testid="stSidebar"] .stMetric * {
+        color: #ffffff !important;
+    }
+    
+    /* Sidebar buttons */
+    [data-testid="stSidebar"] .stButton button {
+        background-color: #0052CC !important;
+        color: white !important;
+        border: none !important;
+    }
+    
+    [data-testid="stSidebar"] .stButton button:hover {
+        background-color: #1479DE !important;
+    }
+    
+    /* Sidebar expander */
+    [data-testid="stSidebar"] .streamlit-expanderHeader {
+        background-color: #1a1a1a !important;
+        color: #ffffff !important;
+        border: 1px solid #0052CC !important;
+    }
+    
+    /* Sidebar divider lines */
+    [data-testid="stSidebar"] hr {
+        border-color: #0052CC !important;
+    }
+    
+    /* Main content headers */
     .main-header {
         text-align: center;
         color: white !important;
@@ -38,29 +114,29 @@ st.markdown("""
         opacity: 0.8;
     }
     .leaderboard-title {
-        color: #54342c;
+        color: #000000;
         font-size: 1.8rem;
         font-weight: bold;
         margin-bottom: 1rem;
-        border-bottom: 2px solid #54342c;
+        border-bottom: 2px solid #0052CC;
         padding-bottom: 0.5rem;
     }
     .metric-card {
         background: linear-gradient(135deg, #ffffff 0%, #f9f9f9 100%);
         padding: 1rem;
         border-radius: 8px;
-        border-left: 4px solid #54342c;
+        border-left: 4px solid #0052CC;
         margin-bottom: 1rem;
-        box-shadow: 0 2px 4px rgba(84, 52, 44, 0.1);
+        box-shadow: 0 2px 4px rgba(0, 82, 204, 0.1);
     }
     .rank-1 {
         background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-        color: #54342c;
+        color: #000000;
         font-weight: bold;
     }
     .rank-2 {
         background: linear-gradient(135deg, #C0C0C0 0%, #A9A9A9 100%);
-        color: #54342c;
+        color: #000000;
         font-weight: bold;
     }
     .rank-3 {
@@ -68,9 +144,11 @@ st.markdown("""
         color: white;
         font-weight: bold;
     }
+    
+    /* Main content selectbox styling - Blue theme */
     .stSelectbox > div > div {
-        background-color: #54342c !important;
-        border: 2px solid #54342c !important;
+        background-color: #0052CC !important;
+        border: 2px solid #0052CC !important;
     }
     .stSelectbox > div > div > div {
         color: white !important;
@@ -89,62 +167,83 @@ st.markdown("""
     }
             
     .stSelectbox label {
-    color: white !important;
-    font-weight: bold !important;}
+        color: white !important;
+        font-weight: bold !important;
+    }
             
+    /* Tabs styling - Blue theme */
     .stTab [data-baseweb="tab-list"] {
         gap: 2px;
     }
     .stTab [data-baseweb="tab"] {
         background-color: #ffffff;
-        color: #54342c;
-        border: 1px solid #54342c;
+        color: #000000;
+        border: 1px solid #0052CC;
         border-radius: 4px 4px 0 0;
     }
     .stTab [data-baseweb="tab"][aria-selected="true"] {
-        background-color: #54342c;
+        background-color: #0052CC;
         color: #ffffff;
     }
+    
+    /* Main content metrics styling */
     .stMetric > div {
         background-color: #f8f9fa !important;
-        border: 1px solid #54342c !important;
+        border: 2px solid #0052CC !important;
         border-radius: 6px !important;
         padding: 0.5rem !important;
     }
     .stMetric [data-testid="metric-container"] {
         background-color: #f8f9fa !important;
-        border: 1px solid #54342c !important;
+        border: 2px solid #0052CC !important;
         border-radius: 6px !important;
         padding: 0.5rem !important;
     }
     .stMetric [data-testid="metric-container"] > div {
-        color: #54342c !important;
+        color: #000000 !important;
     }
     .stMetric .metric-label,
     .stMetric [data-testid="metric-container"] label {
-        color: #54342c !important;
+        color: #000000 !important;
         font-weight: bold !important;
     }
     .stMetric .metric-value,
     .stMetric [data-testid="metric-container"] [data-testid="metric-value"] {
-        color: #54342c !important;
+        color: #000000 !important;
         font-weight: bold !important;
     }
     
-    /* Force all metric text to be brown */
+    /* Force all metric text to be black */
     .stMetric * {
-        color: #54342c !important;
+        color: #000000 !important;
     }
     
     .stMetric div,
     .stMetric span,
     .stMetric p,
     .stMetric label {
-        color: #54342c !important;
+        color: #000000 !important;
     }
     
     [data-testid="metric-container"] * {
-        color: #54342c !important;
+        color: #000000 !important;
+    }
+    
+    /* Buttons - Blue theme */
+    .stButton button {
+        background-color: #0052CC !important;
+        color: white !important;
+        border: none !important;
+        font-weight: bold !important;
+    }
+    
+    .stButton button:hover {
+        background-color: #1479DE !important;
+    }
+    
+    /* Date input - Blue theme */
+    .stDateInput > div > div {
+        border: 2px solid #0052CC !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -430,11 +529,11 @@ def create_leaderboard_chart(df, metric_col, title):
     fig.patch.set_facecolor('#1e1e1e')
     ax.set_facecolor('#1e1e1e')
     
-    # St. Bonaventure color scheme
-    primary_color = '#54342c'
-    accent_colors = ['#8B4513', '#A0522D', '#CD853F', '#DEB887']
+    # Bradley Field House color scheme - Blue gradient
+    primary_color = "#000000"
+    accent_colors = ['#0052CC', "#1479DE", "#3E3BF2", "#FFFFFF"]
     
-    # Create gradient-like effect with different shades
+    # Create gradient-like effect with blue shades
     colors = []
     values = df_sorted[metric_col].values
     max_val = values.max()
@@ -443,15 +542,15 @@ def create_leaderboard_chart(df, metric_col, title):
     for val in values:
         # Normalize value to [0, 1]
         normalized = (val - min_val) / (max_val - min_val) if max_val != min_val else 0.5
-        # Create color based on performance
+        # Create color based on performance using blue gradient
         if normalized > 0.8:
-            colors.append('#FFD700')  # Gold for top performers
+            colors.append("#2600FF")  # Gold for top performers
         elif normalized > 0.6:
-            colors.append('#CD853F')  # Tan
+            colors.append("#5585F6E6")  # Bright blue
         elif normalized > 0.4:
-            colors.append('#A0522D')  # Sienna
+            colors.append("#9BA3FA")  # Medium blue
         else:
-            colors.append('#8B4513')  # Saddle Brown
+            colors.append("#CBDFFC")  # Dark blue
     
     # Create horizontal bar chart
     bars = ax.barh(df_sorted['PlayerName'], df_sorted[metric_col], color=colors, 
@@ -640,8 +739,8 @@ def load_individual_pitch_data():
     return pd.DataFrame(all_pitch_data) if all_pitch_data else pd.DataFrame()
 
 # Header
-st.markdown('<h1 class="main-header">St. Bonaventure Baseball</h1>', unsafe_allow_html=True)
-st.markdown('<p class="sub-header">Bonnies Stuff+ Dashboard</p>', unsafe_allow_html=True)
+st.markdown('<h1 class="main-header">Bradley Field House Baseball</h1>', unsafe_allow_html=True)
+st.markdown('<p class="sub-header"> College Stuff+ Dashboard</p>', unsafe_allow_html=True)
 
 # Load data
 try:
@@ -701,7 +800,7 @@ total_pitches = rapsodo_df['TotalPitches'].sum()
 st.sidebar.metric("Total Pitches", f"{total_pitches:,}")
 
 # Main content
-st.subheader(f"Bonnies {display_name} Leaderboard")
+st.subheader(f"Bradley {display_name} Leaderboard")
 
 # Check if data exists for selected pitch type
 if stuff_plus_col not in rapsodo_df.columns:
@@ -720,7 +819,7 @@ col1, col2 = st.columns([3, 2])
 with col1:
     fig_stuff = create_leaderboard_chart(
         display_df, stuff_plus_col, 
-        f"Bonnies {display_name} Rankings"
+        f"Bradley {display_name} Rankings"
     )
     st.pyplot(fig_stuff, use_container_width=True)
 
@@ -819,7 +918,7 @@ st.dataframe(
 # Right vs Left Handed Analysis
 st.subheader(f"{display_name} - Right vs Left Handed Pitchers")
 
-# Handedness mapping for St. Bonaventure Baseball team
+# Handedness mapping for Bradley Fieldhouse
 handedness_map = {
     'Andrew Ayers': 'LHP',
     'Tom Wilkie': 'LHP', 
@@ -907,7 +1006,7 @@ def get_access_token():
 
 @st.cache_data(ttl=1800)
 def load_bonnies_players_from_csv():
-    """Load St. Bonaventure Baseball players from CSV files"""
+    """Load Bradley Field House players from CSV files"""
     data_dir = "data"
     bonnies_players = {}
     
@@ -1520,7 +1619,7 @@ def create_test_leaderboard(perf_df, test_code, display_name):
     """)
 
 def main():
-    st.title("St. Bonaventure Baseball - Force Plate Leaderboards")
+    st.title("Bradley Field House - Force Plate Leaderboards")
     st.markdown('<p class="sub-header">Performance rankings for CMJ, Squat Jump, Plyo Pushup, and Hop Test</p>', unsafe_allow_html=True)
     
     # Initialize session state
@@ -1601,8 +1700,8 @@ if __name__ == "__main__":
     main()
 
 st.header("Table Assessments - Team View")
-st.markdown('<p class="sub-header">Bonnies Baseball Assessment Table by Player</p>', unsafe_allow_html=True)
-excel_file_path = os.path.join("data", "BonniesBaseballTableAssessment.xlsx")
+st.markdown('<p class="sub-header">Bradley Field House Assessment Table by Player</p>', unsafe_allow_html=True)
+excel_file_path = os.path.join("data", "BradleyFieldHouseTableAssessment.xlsx")
 
 try:
     # Read the Excel file
@@ -1736,4 +1835,4 @@ except Exception as e:
 
 # Footer
 st.markdown("---")
-st.markdown("*St. Bonaventure Baseball Home Dashboard | Built by Liquid Sports Lab*")
+st.markdown("*Bradley Field House Home Dashboard | Built by Liquid Sports Lab*")

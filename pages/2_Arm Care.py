@@ -12,4 +12,4 @@ try:
 except Exception:
     pass
 
-st.header("Arm Care available after next assesment to see deviation from baseline values (those taken 09/06/2025)")
+st.header("Arm Care available only on upgraded package")
